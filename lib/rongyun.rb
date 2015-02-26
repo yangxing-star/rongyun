@@ -10,7 +10,7 @@ module Rongyun
   #
   class Client
     ACTION_USER_TOKEN = "/user/getToken"
-    ACTION_MESSAGE_PUBLISH = "/message/publish"
+    ACTION_MESSAGE_PUBLISH = "/message/private/publish"
     ACTION_MESSAGE_SYSTEM_PUBLISH = "/message/system/publish"
     ACTION_MESSAGE_GROUP_PUBLISH = "/message/group/publish"
     ACTION_MESSAGE_CHATROOM_PUBLISH = "/message/chatroom/publish"
@@ -32,8 +32,8 @@ module Rongyun
       @response_type = "json"
       @user_agent    = "RongCloudSdk/RongCloud-Ruby-Sdk #{RUBY_VERSION} (#{@version})"
 
-      @app_key       = app_key     || @app_key    = ENV["rongcloud-app-key"]
-      @app_secret    = app_secret  || @app_secret = ENV["rongcloud-app-secret"]
+      @app_key       = app_key     || @app_key    = ENV["rongcloud_app_key"]
+      @app_secret    = app_secret  || @app_secret = ENV["rongcloud_app_secret"]
       @verify        = verify
     end
 

@@ -18,6 +18,9 @@ class RongyunTest < Test::Unit::TestCase
     client = Rongyun::Client.new "pvxdm17jx5eqr", "T6Kb5lVqeLz"
     result = client.message_publish("2", "1", "RC:TxtMsg", "{'content':'hello','extra':'helloExtra'}")
     assert_equal result["code"], 200
+
+    result = client.message_publish("2", ["1"], "RC:TxtMsg", "{'content':'hello','extra':'helloExtra'}")
+    assert_equal result["code"], 200
   end
 
   def test_message_system_publish

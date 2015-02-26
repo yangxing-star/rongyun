@@ -6,10 +6,10 @@ require 'rongyun/version'
 Gem::Specification.new do |spec|
   spec.name          = "rongyun"
   spec.version       = Rongyun::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.authors       = ["Zhang, Li Zhong"]
+  spec.email         = ["z@neiwang.org"]
+  spec.summary       = "Rong Yun Server Api"
+  spec.description   = "Rong Yun Server Api"
   spec.homepage      = ""
   spec.license       = "MIT"
 
