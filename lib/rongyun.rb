@@ -14,6 +14,7 @@ module Rongyun
     ACTION_MESSAGE_SYSTEM_PUBLISH = "/message/system/publish"
     ACTION_MESSAGE_GROUP_PUBLISH = "/message/group/publish"
     ACTION_MESSAGE_CHATROOM_PUBLISH = "/message/chatroom/publish"
+    ACTION_MESSAGE_BROADCAST = "/message/broadcast"
     ACTION_GROUP_SYNC = "/group/sync"
     ACTION_GROUP_CREATE = "/group/create"
     ACTION_GROUP_JOIN = "/group/join"
@@ -156,10 +157,22 @@ module Rongyun
                                  object_name,
                                  content
       post(
-        action=ACTION_MESSAGE_GROUP_PUBLISH,
+        action=ACTION_MESSAGE_CHATROOM_PUBLISH,
         params={
           "fromUserId" => from_user_id,
           "toGroupId"  => to_chatroom_id,
+          "objectName" => object_name,
+          "content"    => content
+        })
+    end
+
+    def message_broadcast from_user_id,
+                          object_name,
+                          content
+      post(
+        action=ACTION_MESSAGE_BROADCAST,
+        params={
+          "fromUserId" => from_user_id,
           "objectName" => object_name,
           "content"    => content
         })
