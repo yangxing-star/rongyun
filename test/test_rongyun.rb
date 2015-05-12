@@ -12,6 +12,8 @@ class RongyunTest < Test::Unit::TestCase
     client = Rongyun::Client.new "pvxdm17jx5eqr", "T6Kb5lVqeLz"
     result = client.user_get_token("1", "test", "http://test/1")
     assert_equal result["code"], 200
+    result = client.user_get_token("U:8d4f905dae5c198d4cfe9f951cfdb0eb", "", "http://test/2")
+    assert_equal result["code"], 200
   end
 
   def test_message_publish
