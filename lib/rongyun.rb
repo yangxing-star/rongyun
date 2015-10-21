@@ -107,7 +107,7 @@ module Rongyun
               toUserId: to_user_id,
               objectName: object_name,
               content: content,
-              pushContent: push_content.to_s
+              pushContent: push_content.to_s,
               pushData: push_data.to_s
             }
           )
