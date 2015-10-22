@@ -48,9 +48,9 @@ module Rongyun
 
       {
         'app-key' => @app_key,
-        nonce: nonce,
-        timestamp: timestamp,
-        signature: signature
+        'nonce' => nonce,
+        'timestamp' => timestamp,
+        'signature' => signature
       }
     end
 
