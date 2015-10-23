@@ -69,17 +69,7 @@ module Rongyun
       req = Net::HTTP::Post.new(uri.path, initheader = headers)
       req.body = URI.encode_www_form(data)
       res = http.request(req)
-      handle_response(res)
-    end
-
-    def handle_response response
-      status = response.code.to_i
-      case status
-        when 200..299 then
-          JSON.parse(response.body)
-        else
-          raise Exception, "Response #{response.code} #{response.message}: #{response.body}"
-      end
+      JSON.parse(res.body)
     end
 
     def post action, params = nil
