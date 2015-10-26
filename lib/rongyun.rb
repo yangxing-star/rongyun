@@ -6,8 +6,6 @@ require 'uri'
 require 'json'
 
 module Rongyun
-  # Your code goes here...
-  #
   class Client
 
     ACTION_USER_TOKEN = '/user/getToken'
@@ -26,6 +24,9 @@ module Rongyun
     ACTION_CHATROOM_QUERY = '/chatroom/query'
     ACTION_USER_BLACKLIST_ADD = '/user/blacklist/add'
     ACTION_USER_BLACKLIST_REMOVE = '/user/blacklist/remove'
+    ACTION_GROUP_USER_GAG_ADD = '/group/user/gag/add'
+    ACTION_GROUP_USER_GAG_ROLLBACK = '/group/user/gag/rollback'
+    ACTION_GROUP_USER_GAG_LIST = '/group/user/gag/list'
 
     def initialize app_key    = nil,
                    app_secret = nil,
@@ -177,21 +178,11 @@ module Rongyun
     end
 
     def group_quit user_id_list, group_id
-      post( ACTION_GROUP_QUIT,
-            {
-              userId: user_id_list,
-              groupId: group_id
-            }
-          )
+      post( ACTION_GROUP_QUIT, { userId: user_id_list, groupId: group_id } )
     end
 
     def group_dismiss user_id, group_id
-      post( ACTION_GROUP_DISMISS,
-            {
-              userId: user_id,
-              groupId: group_id,
-            }
-          )
+      post( ACTION_GROUP_DISMISS, { userId: user_id, groupId: group_id } )
     end
 
     def chatroom_create chatrooms
@@ -199,12 +190,24 @@ module Rongyun
       post( ACTION_CHATROOM_CREATE, chatroom_mapping )
     end
 
-    def chatroom_destroy chatroom_id_list=nil
+    def chatroom_destroy chatroom_id_list = nil
       post( ACTION_CHATROOM_DESTROY, { chatroomId: chatroom_id_list.to_a } )
     end
 
-    def chatroom_query chatroom_id_list=nil
+    def chatroom_query chatroom_id_list = nil
       post( ACTION_CHATROOM_QUERY, { chatroomId: chatroom_id_list.to_a } )
+    end
+
+    def group_user_gag_add(user_id, group_id, minute = 60)
+      post( ACTION_GROUP_USER_GAG_ADD, { userId: user_id, groupId: group_id, minute: minute } )
+    end
+
+    def group_user_gag_rollback(user_id, group_id)
+      post( ACTION_GROUP_USER_GAG_ROLLBACK, { userId: user_id, groupId: group_id } )
+    end
+
+    def group_user_gag_list(group_id)
+      post( ACTION_GROUP_USER_GAG_LIST, { groupId: group_id } )
     end
   end
 end
