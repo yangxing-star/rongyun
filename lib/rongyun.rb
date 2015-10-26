@@ -198,7 +198,7 @@ module Rongyun
       post( ACTION_CHATROOM_QUERY, { chatroomId: chatroom_id_list.to_a } )
     end
 
-    def group_user_gag_add(user_id, group_id, minute = 60)
+    def group_user_gag_add(user_id, group_id, minute = 120)
       post( ACTION_GROUP_USER_GAG_ADD, { userId: user_id, groupId: group_id, minute: minute } )
     end
 
