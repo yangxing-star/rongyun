@@ -9,6 +9,8 @@ module Rongyun
   class Client
 
     ACTION_USER_TOKEN = '/user/getToken'
+    ACTION_USER_REFRESH = '/user/refresh'
+    ACTION_USER_CHECKONLINE = '/user/checkOnline'
     ACTION_MESSAGE_PUBLISH = '/message/private/publish'
     ACTION_MESSAGE_SYSTEM_PUBLISH = '/message/system/publish'
     ACTION_MESSAGE_GROUP_PUBLISH = '/message/group/publish'
@@ -79,6 +81,14 @@ module Rongyun
 
     def user_get_token user_id, name, portrait_uri
       post( ACTION_USER_TOKEN, { userId: user_id, name: name, portraitUri: portrait_uri } )
+    end
+
+    def user_refresh(user_id, name, portrait_uri)
+      post( ACTION_USER_REFRESH, { userId: user_id, name: name, portraitUri: portrait_uri } )
+    end
+
+    def user_check_online(user_id)
+      post( ACTION_USER_CHECKONLINE, { userId: user_id } )
     end
 
     def add_blacklist user_id, black_user_id
