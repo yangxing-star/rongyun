@@ -10,31 +10,40 @@ module Rongyun
 
     ACTION_USER_TOKEN = '/user/getToken'
     ACTION_USER_REFRESH = '/user/refresh'
+    ACTION_USER_BLOCK = '/user/block'
+    ACTION_USER_UNBLOCK = '/user/unblock'
+    ACTION_USER_BLOCK_QUERY = '/user/block/query'
     ACTION_USER_CHECKONLINE = '/user/checkOnline'
+    ACTION_USER_BLACKLIST_ADD = '/user/blacklist/add'
+    ACTION_USER_BLACKLIST_REMOVE = '/user/blacklist/remove'
+
     ACTION_MESSAGE_PUBLISH = '/message/private/publish'
     ACTION_MESSAGE_SYSTEM_PUBLISH = '/message/system/publish'
     ACTION_MESSAGE_GROUP_PUBLISH = '/message/group/publish'
     ACTION_MESSAGE_CHATROOM_PUBLISH = '/message/chatroom/publish'
     ACTION_MESSAGE_BROADCAST = '/message/broadcast'
+
     ACTION_GROUP_SYNC = '/group/sync'
     ACTION_GROUP_CREATE = '/group/create'
     ACTION_GROUP_JOIN = '/group/join'
     ACTION_GROUP_QUIT = '/group/quit'
     ACTION_GROUP_DISMISS = '/group/dismiss'
-    ACTION_CHATROOM_CREATE = '/chatroom/create'
-    ACTION_CHATROOM_DESTROY = '/chatroom/destroy'
-    ACTION_CHATROOM_QUERY = '/chatroom/query'
-    ACTION_USER_BLACKLIST_ADD = '/user/blacklist/add'
-    ACTION_USER_BLACKLIST_REMOVE = '/user/blacklist/remove'
+    ACTION_GROUP_REFRESH = '/group/refresh'
+    ACTION_GROUP_USER_QUERY = '/group/user/query'
     ACTION_GROUP_USER_GAG_ADD = '/group/user/gag/add'
     ACTION_GROUP_USER_GAG_ROLLBACK = '/group/user/gag/rollback'
     ACTION_GROUP_USER_GAG_LIST = '/group/user/gag/list'
 
-    def initialize app_key    = nil,
-                   app_secret = nil,
-                   verify     = true
-      @version       = 1.0
+    ACTION_WORDFILTER_ADD = '/wordfilter/add'
+    ACTION_WORDFILTER_DELETE = '/wordfilter/delete'
+    ACTION_WORDFILTER_LIST = '/wordfilter/list'
 
+    ACTION_CHATROOM_CREATE = '/chatroom/create'
+    ACTION_CHATROOM_DESTROY = '/chatroom/destroy'
+    ACTION_CHATROOM_QUERY = '/chatroom/query'
+
+    def initialize(app_key = nil, app_secret = nil, verify = true)
+      @version       = 1.0
       @api_host      = 'https://api.cn.rong.io'
       @response_type = 'json'
       @user_agent    = "RongCloudSdk/RongCloud-Ruby-Sdk #{RUBY_VERSION} (#{@version})"
@@ -63,7 +72,7 @@ module Rongyun
       header.merge!(make_signature)
     end
 
-    def http_call url, headers, data
+    def http_call(url, headers, data)
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == 'https')        # enable SSL/TLS
@@ -75,11 +84,11 @@ module Rongyun
       JSON.parse(res.body)
     end
 
-    def post action, params = nil
+    def post(action, params = nil)
       http_call(@api_host + action + "." + @response_type, headers, params)
     end
 
-    def user_get_token user_id, name, portrait_uri
+    def user_get_token(user_id, name, portrait_uri)
       post( ACTION_USER_TOKEN, { userId: user_id, name: name, portraitUri: portrait_uri } )
     end
 
@@ -91,17 +100,41 @@ module Rongyun
       post( ACTION_USER_CHECKONLINE, { userId: user_id } )
     end
 
-    def add_blacklist user_id, black_user_id
+    def add_blacklist(user_id, black_user_id)
       post( ACTION_USER_BLACKLIST_ADD, { userId: user_id, blackUserId: black_user_id } )
       post( ACTION_USER_BLACKLIST_ADD, { userId: black_user_id, blackUserId: user_id } )
     end
 
-    def remove_blacklist user_id, black_user_id
+    def remove_blacklist(user_id, black_user_id)
       post( ACTION_USER_BLACKLIST_REMOVE, { userId: user_id, blackUserId: black_user_id } )
       post( ACTION_USER_BLACKLIST_REMOVE, { userId: black_user_id, blackUserId: user_id } )
     end
 
-    def message_publish from_user_id, to_user_id, object_name, content, push_content, push_data
+    def user_block(user_id, minute = 10)
+      post( ACTION_USER_BLOCK, { userId: user_id } )
+    end
+
+    def user_unblock(user_id)
+      post( ACTION_USER_UNBLOCK, { userId: user_id } )
+    end
+
+    def user_block_query
+      post( ACTION_USER_BLOCK_QUERY )
+    end
+
+    def add_wordfilter(word)
+      post( ACTION_WORDFILTER_ADD, { word: word } )
+    end
+
+    def delete_wordfilter(word)
+      post( ACTION_WORDFILTER_DELETE, { word: word } )
+    end
+
+    def wordfilter_list(word)
+      post( ACTION_WORDFILTER_LIST )
+    end
+
+    def message_publish(from_user_id, to_user_id, object_name, content, push_content, push_data)
       post( ACTION_MESSAGE_PUBLISH,
             {
               fromUserId: from_user_id,
@@ -114,7 +147,7 @@ module Rongyun
           )
     end
 
-    def message_system_publish from_user_id, to_user_id, object_name, content, push_content, push_data
+    def message_system_publish(from_user_id, to_user_id, object_name, content, push_content, push_data)
       post( ACTION_MESSAGE_SYSTEM_PUBLISH,
             {
               fromUserId: from_user_id,
@@ -127,7 +160,7 @@ module Rongyun
           )
     end
 
-    def message_group_publish from_user_id, to_group_id, object_name, content, push_content, push_data
+    def message_group_publish(from_user_id, to_group_id, object_name, content, push_content, push_data)
       post( ACTION_MESSAGE_GROUP_PUBLISH,
             {
               fromUserId: from_user_id,
@@ -140,7 +173,7 @@ module Rongyun
           )
     end
 
-    def message_chatroom_publish from_user_id, to_chatroom_id, object_name, content
+    def message_chatroom_publish(from_user_id, to_chatroom_id, object_name, content)
       post( ACTION_MESSAGE_CHATROOM_PUBLISH,
             { fromUserId: from_user_id,
               toGroupId: to_chatroom_id,
@@ -150,7 +183,7 @@ module Rongyun
           )
     end
 
-    def message_broadcast from_user_id, object_name, content
+    def message_broadcast(from_user_id, object_name, content)
       post( ACTION_MESSAGE_BROADCAST,
             {
               fromUserId: from_user_id,
@@ -160,14 +193,14 @@ module Rongyun
           )
     end
 
-    def group_sync user_id, groups
+    def group_sync(user_id, groups)
       groups.each { |k, v| group_mapping["group[#{k}]"] = v }
       group_mapping[:userId] = user_id
 
-      post( ACTION_GROUP_SYNC, group_mapping)
+      post( ACTION_GROUP_SYNC, group_mapping )
     end
 
-    def group_create user_id_list, group_id, group_name
+    def group_create(user_id_list, group_id, group_name)
       post( ACTION_GROUP_CREATE,
             {
               userId: user_id_list,
@@ -177,7 +210,7 @@ module Rongyun
           )
     end
 
-    def group_join user_id_list, group_id, group_name
+    def group_join(user_id_list, group_id, group_name)
       post( ACTION_GROUP_JOIN,
             {
               userId: user_id_list,
@@ -187,24 +220,32 @@ module Rongyun
           )
     end
 
-    def group_quit user_id_list, group_id
+    def group_quit(user_id_list, group_id)
       post( ACTION_GROUP_QUIT, { userId: user_id_list, groupId: group_id } )
     end
 
-    def group_dismiss user_id, group_id
+    def group_dismiss(user_id, group_id)
       post( ACTION_GROUP_DISMISS, { userId: user_id, groupId: group_id } )
     end
 
-    def chatroom_create chatrooms
+    def group_refresh(group_id, group_name)
+      post( ACTION_GROUP_REFRESH, { groupId: group_id, groupName: group_name } )
+    end
+
+    def group_user_query(group_id)
+      post( ACTION_GROUP_USER_QUERY, { groupId: group_id } )
+    end
+
+    def chatroom_create(chatrooms)
       chatrooms.each { |k, v| chatroom_mapping["charoom[#{k}]"] = v }
       post( ACTION_CHATROOM_CREATE, chatroom_mapping )
     end
 
-    def chatroom_destroy chatroom_id_list = nil
+    def chatroom_destroy(chatroom_id_list = nil)
       post( ACTION_CHATROOM_DESTROY, { chatroomId: chatroom_id_list.to_a } )
     end
 
-    def chatroom_query chatroom_id_list = nil
+    def chatroom_query(chatroom_id_list = nil)
       post( ACTION_CHATROOM_QUERY, { chatroomId: chatroom_id_list.to_a } )
     end
 
