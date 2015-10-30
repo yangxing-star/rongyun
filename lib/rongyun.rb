@@ -183,12 +183,15 @@ module Rongyun
           )
     end
 
-    def message_broadcast(from_user_id, object_name, content)
+    def message_broadcast(from_user_id, object_name, content, push_content, push_data, os)
       post( ACTION_MESSAGE_BROADCAST,
             {
               fromUserId: from_user_id,
               objectName: object_name,
-              content: content
+              content: content,
+              pushContent: push_content,
+              pushData: push_data,
+              os: os
             }
           )
     end
