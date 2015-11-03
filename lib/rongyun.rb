@@ -255,7 +255,7 @@ module Rongyun
     end
 
     def group_user_gag_add(user_id, group_id, minute = 120)
-      post( ACTION_GROUP_USER_GAG_ADD, { userId: user_id, groupId: group_id, minute: minute } )
+      post( ACTION_GROUP_USER_GAG_ADD, { userId: user_id, groupId: group_id, minute: minute.to_i } )
     end
 
     def group_user_gag_rollback(user_id, group_id)
