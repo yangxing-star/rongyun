@@ -205,28 +205,28 @@ module Rongyun
       post( ACTION_GROUP_SYNC, group_mapping )
     end
 
-    def group_create(user_id_list, group_id, group_name)
+    def group_create(user_ids, group_id, group_name)
       post( ACTION_GROUP_CREATE,
             {
-              userId: user_id_list,
+              userId: user_ids,
               groupId: group_id,
               groupName: group_name
             }
           )
     end
 
-    def group_join(user_id_list, group_id, group_name)
+    def group_join(user_ids, group_id, group_name)
       post( ACTION_GROUP_JOIN,
             {
-              userId: user_id_list,
+              userId: user_ids,
               groupId: group_id,
               groupName: group_name
             }
           )
     end
 
-    def group_quit(user_id_list, group_id)
-      post( ACTION_GROUP_QUIT, { userId: user_id_list, groupId: group_id } )
+    def group_quit(user_ids, group_id)
+      post( ACTION_GROUP_QUIT, { userId: user_ids, groupId: group_id } )
     end
 
     def group_dismiss(user_id, group_id)
@@ -254,12 +254,12 @@ module Rongyun
       post( ACTION_CHATROOM_QUERY, { chatroomId: chatroom_id_list.to_a } )
     end
 
-    def group_user_gag_add(user_id, group_id, minute = 120)
-      post( ACTION_GROUP_USER_GAG_ADD, { userId: user_id, groupId: group_id, minute: minute.to_i } )
+    def group_user_gag_add(user_ids, group_id, minute = 120)
+      post( ACTION_GROUP_USER_GAG_ADD, { userId: user_ids, groupId: group_id, minute: minute.to_i } )
     end
 
-    def group_user_gag_rollback(user_id, group_id)
-      post( ACTION_GROUP_USER_GAG_ROLLBACK, { userId: user_id, groupId: group_id } )
+    def group_user_gag_rollback(user_ids, group_id)
+      post( ACTION_GROUP_USER_GAG_ROLLBACK, { userId: user_ids, groupId: group_id } )
     end
 
     def group_user_gag_list(group_id)
