@@ -22,6 +22,8 @@ module Rongyun
     ACTION_MESSAGE_GROUP_PUBLISH = '/message/group/publish'
     ACTION_MESSAGE_CHATROOM_PUBLISH = '/message/chatroom/publish'
     ACTION_MESSAGE_BROADCAST = '/message/broadcast'
+    ACTION_MESSAGE_HISTORY = '/message/history'
+    ACTION_MESSAGE_HISTORY_DELETE = '/message/history/delete'
 
     ACTION_GROUP_SYNC = '/group/sync'
     ACTION_GROUP_CREATE = '/group/create'
@@ -196,6 +198,14 @@ module Rongyun
               os: os
             }
           )
+    end
+
+    def message_history_delete(date)
+      post( ACTION_MESSAGE_HISTORY_DELETE, { date: date } )
+    end
+
+    def message_history(date)
+      post( ACTION_MESSAGE_HISTORY, { date: date } )
     end
 
     def group_sync(user_id, groups)
