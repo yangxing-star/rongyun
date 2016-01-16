@@ -16,6 +16,7 @@ module Rongyun
     ACTION_USER_CHECKONLINE = '/user/checkOnline'
     ACTION_USER_BLACKLIST_ADD = '/user/blacklist/add'
     ACTION_USER_BLACKLIST_REMOVE = '/user/blacklist/remove'
+    ACTION_USER_TAG_SET = '/user/tag/set'
 
     ACTION_MESSAGE_PUBLISH = '/message/private/publish'
     ACTION_MESSAGE_SYSTEM_PUBLISH = '/message/system/publish'
@@ -43,6 +44,8 @@ module Rongyun
     ACTION_CHATROOM_CREATE = '/chatroom/create'
     ACTION_CHATROOM_DESTROY = '/chatroom/destroy'
     ACTION_CHATROOM_QUERY = '/chatroom/query'
+
+    ACTION_PUSH = '/push'
 
     def initialize(app_key = nil, app_secret = nil, verify = true)
       @version       = 1.0
@@ -124,6 +127,10 @@ module Rongyun
 
     def user_block_query
       post( ACTION_USER_BLOCK_QUERY )
+    end
+
+    def user_tag_set(user_id, tags)
+      post( ACTION_USER_TAG_SET, { userId: user_id, tags: tags } )
     end
 
     def add_wordfilter(word)
@@ -274,6 +281,11 @@ module Rongyun
 
     def group_user_gag_list(group_id)
       post( ACTION_GROUP_USER_GAG_LIST, { groupId: group_id } )
+    end
+
+    def push(platform, audience, tag, user_id, is_to_all, notification)
+      post ( ACTION_PUSH, { platform: platform, audience: audience, tag: tag, 
+                            userid: user_id, is_to_all: is_to_all, notification: notification } )
     end
   end
 end
