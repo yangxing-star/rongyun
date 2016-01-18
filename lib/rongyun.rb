@@ -283,9 +283,10 @@ module Rongyun
       post( ACTION_GROUP_USER_GAG_LIST, { groupId: group_id } )
     end
 
-    def push(platform, audience, tag, user_id, is_to_all, notification)
+    def push(platform, audience, tag, user_id, is_to_all, notification, extras)
       post ( ACTION_PUSH, { platform: platform, audience: audience, tag: tag, 
-                            userid: user_id, is_to_all: is_to_all, notification: notification } )
+                            userid: user_id, is_to_all: is_to_all, notification: notification,
+                            extras: extras } )
     end
   end
 end
