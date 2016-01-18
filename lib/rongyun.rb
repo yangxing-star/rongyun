@@ -71,8 +71,8 @@ module Rongyun
       }
     end
 
-    def headers
-      header = { 'content-type' => 'application/x-www-form-urlencoded',
+    def headers(content_type='application/x-www-form-urlencoded')
+      header = { 'content-type' => content_type,
                  'user-agent'   => @user_agent}
       header.merge!(make_signature)
     end
@@ -93,6 +93,10 @@ module Rongyun
 
     def post(action, params = nil)
       http_call(@api_host + action + "." + @response_type, headers, params)
+    end
+
+    def post_json(action, params = nil)
+      http_call(@api_host + action + "." + @response_type, headers('application/json'), params)
     end
 
     def user_get_token(user_id, name, portrait_uri)
@@ -130,7 +134,7 @@ module Rongyun
     end
 
     def user_tag_set(user_id, tags)
-      post( ACTION_USER_TAG_SET, { userId: user_id, tags: tags } )
+      post_json( ACTION_USER_TAG_SET, { userId: user_id, tags: tags } )
     end
 
     def add_wordfilter(word)
@@ -284,7 +288,7 @@ module Rongyun
     end
 
     def push(platform, audience, notification)
-      post( ACTION_PUSH, { platform: platform, audience: audience, notification: notification } )
+      post_json( ACTION_PUSH, { platform: platform, audience: audience, notification: notification } )
     end
   end
 end
