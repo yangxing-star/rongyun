@@ -284,7 +284,7 @@ module Rongyun
     end
 
     def push(platform, audience, notification)
-      post ( ACTION_PUSH, { platform: platform, audience: audience, notification: notification } )
+      post( ACTION_PUSH, { platform: platform, audience: audience, notification: notification } )
     end
   end
 end
