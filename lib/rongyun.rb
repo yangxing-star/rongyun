@@ -86,13 +86,13 @@ module Rongyun
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE  # 这个也很重要
 
       req = Net::HTTP::Post.new(uri.path, initheader = headers)
-      req.body = body(data)
+      req.body = body(headers['content-type'], data)
       res = http.request(req)
       JSON.parse(res.body)
     end
 
-    def body(data)
-      headers['content-type'] == 'application/x-www-form-urlencoded' ? URI.encode_www_form(data) : data.to_json
+    def body(content_type, data)
+      content_type == 'application/x-www-form-urlencoded' ? URI.encode_www_form(data) : data.to_json
     end
 
     def post(action, params = nil)
@@ -138,7 +138,7 @@ module Rongyun
     end
 
     def user_tag_set(user_id, tags)
-      post( ACTION_USER_TAG_SET, { userId: user_id, tags: tags } )
+      post_json( ACTION_USER_TAG_SET, { userId: user_id, tags: tags } )
     end
 
     def add_wordfilter(word)
