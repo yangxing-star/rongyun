@@ -86,12 +86,12 @@ module Rongyun
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE  # 这个也很重要
 
       req = Net::HTTP::Post.new(uri.path, initheader = headers)
-      req.body = body
+      req.body = body(data)
       res = http.request(req)
       JSON.parse(res.body)
     end
 
-    def body
+    def body(data)
       headers['content-type'] == 'application/x-www-form-urlencoded' ? URI.encode_www_form(data) : data.to_json
     end
 
