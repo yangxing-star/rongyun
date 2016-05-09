@@ -88,7 +88,14 @@ module Rongyun
       req = Net::HTTP::Post.new(uri.path, initheader = headers)
       req.body = body(headers['content-type'], data)
       res = http.request(req)
-      JSON.parse(res.body)
+      response_object(JSON.parse(res.body))
+    end
+
+    def response_object(body)
+      response = Struct.new(:success, :data).new
+      response.success = body['code'] == 200
+      response.data = body
+      response
     end
 
     def body(content_type, data)
