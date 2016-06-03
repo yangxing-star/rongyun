@@ -82,7 +82,7 @@ module Rongyun
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == 'https')        # enable SSL/TLS
       http.ssl_version = :TLSv1
-      http.ciphers = ['RC4-SHA']
+      # http.ciphers = ['RC4-SHA']
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE  # 这个也很重要
 
       req = Net::HTTP::Post.new(uri.path, initheader = headers)
